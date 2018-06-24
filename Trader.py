@@ -14,26 +14,26 @@ class Trader(Thread):
 		self.quote_currency = quote_currency
 		self.base_currency = base_currency
 		self.mode = mode
-		#Authenticate details
+		# Authenticate details
 		self.CoinBase = CoinbaseExchange(key, b64secret, passphrase)
-		#Create model
+		# Create model
 		self.model = Model(csv_price, csv_transactions)
-		#Choose Product
+		# Choose Product
 		self.product_id = self.CoinBase.getProductId(self.quote_currency, self.base_currency)
-		#Specify timeout duration
+		# Specify timeout duration
 		self.order_timeout = 10 * 60 #10 minutes (in seconds)
-		#Display welcome message
+		# Display welcome message
 		print('Running...')
 
 	def run(self):
-		#Run until stopped by stopped by Admin, waiting at set intervals
+		# Run until stopped by stopped by Admin, waiting at set intervals
 		while not self.stopped.wait(self.wait_time):
 			self.Trade() # Pass mode for bot to utilize (etc 1)
 
 	def order(self, type):
 		if (type == 'sell'):
-			#Sell product
-			#Get all open orders and cancel
+			# Sell product
+			# Get all open orders and cancel
 			open_orders = self.CoinBase.getOrders()
 			if(len(open_orders) > 0):
 				for orders in open_orders:
@@ -42,7 +42,7 @@ class Trader(Thread):
 
 			current_balance = float(self.CoinBase.getBalance(self.quote_currency))
 			if current_balance > 0:
-				#Sell current position
+				# Sell current position
 				order = self.model.sell(self.product_id, self.CoinBase, self.quote_currency, self.base_currency)
 				order_time = order['created_at']
 				order_id = order['id']
@@ -50,7 +50,7 @@ class Trader(Thread):
 				print('Time: {}, Order: Sell, Price:{}, Status: {}'.format(order_time, price, order['status']))
 				timer_count = 0
 				while True:
-					#Cancel order if timeout
+					# Cancel order if timeout
 					if timer_count > self.order_timeout:
 						self.CoinBase.cancelOrder(order_id)
 						time_now = self.CoinBase.getTime()
@@ -58,7 +58,7 @@ class Trader(Thread):
 						break
 					order_status = self.CoinBase.getOrderStatus(order_id)
 
-					#Return success message if order successful
+					# Return success message if order successful
 					if order_status == 'done':
 						time_now = self.CoinBase.getTime()
 						print('Time: {}, Sell fulfilled at {}'.format(time_now, order['price']))
@@ -72,7 +72,7 @@ class Trader(Thread):
 		elif (type == 'buy'):
 			current_balance = float(self.CoinBase.getBalance(self.base_currency))
 			if current_balance > 0:
-				#Buy product
+				# Buy product
 				order = self.model.buy(self.product_id, self.CoinBase, self.base_currency)
 				order_time = order['created_at']
 				order_id = order['id']
@@ -81,7 +81,7 @@ class Trader(Thread):
 
 				timer_count = 0
 				while True:
-					#Cancel order if timeout
+					# Cancel order if timeout
 					order_status = self.CoinBase.getOrderStatus(order_id)
 					if timer_count > self.order_timeout:
 						self.CoinBase.cancelOrder(order_id)

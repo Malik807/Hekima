@@ -11,12 +11,23 @@ class CoinbaseExchange(object):
         time_dt = datetime.datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
         return time_dt
 
-    def getAccounts(self, quote_currency):
+    def getAccount(self, quote_currency):
         request = self.auth.get_accounts() 
-        # #Find index corresponding to pair
+        # Find index corresponding to pair
         index = next(index for (index, d) in enumerate(request) if ((d.get('currency') == quote_currency)))
         account = request[index].get('id')
         return account
+
+    def getAccounts(self):
+        request = self.auth.get_accounts()
+        return request
+
+    def getPortfolioBalance(self):
+        accounts = self.getAccounts()
+        sum = 0
+        for item in accounts:
+            sum += float(item.get('balance'))
+        return sum
 
     def getOrderStatus(self, order_id):
         request = self.auth.get_order(order_id)

@@ -1,13 +1,13 @@
 from Trader import *
 
 #Custom settings
-LOOP_DURATION = 3 * 60 # Time period (in seconds)
-MAX_LOOP_TIME = 10 * 24 * 60 * 60 # Max duration to run (in seconds)
+LOOP_DURATION = 60 * 60 # Time period (in seconds)
+MAX_LOOP_TIME = 30 * 24 * 60 * 60 # Max duration to run (in seconds)
 QUOTE_CURRENCY = "ETH" # Cryptocurrency of choice
 BASE_CURRENCY = "USD" # Fiat currency of choice
 CSV_PRICE = "ETH_price.csv" # Price CSV name
 CSV_TRANSACTIONS = "ETH_transactions.csv" # Transaction CSV name
-MODE = 4 # Mode of the Bot
+MODE = 5 # Mode of the Bot
 
 #Start thread
 stopFlag = Event()

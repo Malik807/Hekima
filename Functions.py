@@ -1,7 +1,7 @@
 from datetime import datetime
 from strategies.rsi import *
 from strategies.trend_ema import *
-from strategies.under_over import *
+from strategies.momentum import *
 import pandas as pd
 import os.path
 import matplotlib.pyplot as plt
@@ -57,7 +57,7 @@ class Model(object):
         #Buy cryptocurrency and return order information
         time = CoinBase.getTime()
         buy_price = float(CoinBase.determinePrice(product_id, 'buy'))
-        balance = float(CoinBase.getBalance(base_currency)) * .1
+        balance = float(CoinBase.getBalance(base_currency)) * .25
         quantity = balance/buy_price
         order = CoinBase.buy(product_id, quantity, buy_price)
         if 'id' in order:
@@ -131,7 +131,10 @@ class Model(object):
             signal = rsi(self)
         elif mode == 4:
             # Mode 2 : Under/Over
-            signal = under_over(self)  
+            signal = under_over(self)
+        elif mode == 5:
+            # Mode 2 : Under/Over
+            signal = momentum(self) 
 
         return signal          
 

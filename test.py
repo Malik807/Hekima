@@ -9,9 +9,10 @@ CSV_PRICE = "price.csv" # Price CSV name
 CSV_TRANSACTIONS = "transactions.csv" # Transaction CSV name
 MODE = 2 # Mode of the Bot
 # Authenticate Client Based On Account Credentials
-# auth = CoinbaseExchange(key, b64secret, passphrase)
+auth = CoinbaseExchange(key, b64secret, passphrase)
 
-# print auth.getAccounts(QUOTE_CURRENCY)
+print auth.getAccounts()
+print auth.getPortfolioBalance()
 # print auth.getBalance(QUOTE_CURRENCY)
 # print auth.getOrderStatus('asddadsadas')
 # print auth.getOrderStatus('79c6dc9d-13b8-4e20-96de-a4afd838baad')
@@ -32,12 +33,12 @@ MODE = 2 # Mode of the Bot
 # print auth.cancelOrder('6cd9475d-d532-4dbd-828a-7ba6704c99c6')
 
 #Start thread
-stopFlag = Event()
-thread = Trader(stopFlag, LOOP_DURATION, QUOTE_CURRENCY, BASE_CURRENCY, CSV_PRICE, CSV_TRANSACTIONS, MODE)
-thread.daemon = True
-thread.start()
+# stopFlag = Event()
+# thread = Trader(stopFlag, LOOP_DURATION, QUOTE_CURRENCY, BASE_CURRENCY, CSV_PRICE, CSV_TRANSACTIONS, MODE)
+# thread.daemon = True
+# thread.start()
 
-#Set max time to run
-time.sleep(MAX_LOOP_TIME)
-stopFlag.set()
+# #Set max time to run
+# time.sleep(MAX_LOOP_TIME)
+# stopFlag.set()
 
